@@ -1,0 +1,15 @@
+---
+- name: Playbook 3
+  hosts: nodes
+  tasks:
+  - name: Modify the file
+    lineinfile:
+     path: "/etc/default/grub"
+     backrefs: yes
+     regexp: "^GRUB_CMDLINE_LINUX="
+     line: "GRUB_CMDLINE_LINUX='no_timer_check console=tty0 console=ttyS0,115200n8 net.ifnames=0 biosdevname=0 elevator=noop'"
+
+  - name: Apply the amendments
+    command: "grub2-mkconfig -o /etc/default/grub"
+...
+

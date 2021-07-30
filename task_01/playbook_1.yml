@@ -1,0 +1,25 @@
+---
+- name: Playbook 1
+  hosts: nodes
+  tasks:
+  - name: Install the Apache webserver
+    yum: pkg=httpd state=latest
+
+  - name: Start the httpd service
+    service:
+     name: httpd
+     enabled: yes
+     state: started
+
+  - name: Create a html file
+    copy:
+     dest: "/var/www/html/index.html"
+     content: Welcome to my webserver
+
+  - name: Open ports for the webserver
+    firewalld:
+     service: http
+     permanent: yes
+     state: enabled
+...
+

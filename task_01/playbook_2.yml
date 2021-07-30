@@ -1,0 +1,19 @@
+---
+- name: Playbook 2
+  hosts: nodes
+  tasks:
+  - name: Remove the httpd from managed hosts
+    yum: pkg=httpd state=removed
+
+  - name: Remove the html file
+    file:
+     path: "/var/www/html/index.html"
+     state: absent
+
+  - name: Close the ports
+    firewalld:
+     service: http
+     permanent: yes
+     state: disabled
+...
+
