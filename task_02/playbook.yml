@@ -1,0 +1,25 @@
+---
+- name: Create the users
+  hosts: nodes
+  vars_files:
+   - vars/users
+  vars:
+   - common_password: !vault |
+      $ANSIBLE_VAULT;1.1;AES256
+      34616138623061663562363464666264316639336565333063383933376636643033343739386438
+      6663313065333036363866666334323430353339393634380a656330333462663735303064323962
+      34313433633232383262333932343433636431663636353732393036623736346263316130316563
+      3363323434363462340a663866666533376564383530316363343833656166363439653930316435
+      3433
+  tasks:
+   - user:
+      name: "{{ item.value.username }}"
+      password: "{{ common_password | password_hash('sha512') }}"
+      home: "{{ item.value.homedir }}"
+      comment: "{{ item.value.email }}"
+      shell: /bin/bash
+      update_password: on_create
+      state: present
+     with_dict: "{{ users }}"
+...
+
